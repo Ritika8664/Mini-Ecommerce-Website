@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Production builds and Vite caches
+dist/
+.vite/
+.vite-temp/
+
+# Local environment files (keep .env.example tracked)
+.env
+.env.local
+.env.*.local
+
+# Test and tooling output
+coverage/
+*.tsbuildinfo
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
