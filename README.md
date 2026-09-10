@@ -4,26 +4,138 @@ React + TypeScript frontend application for the Mini AI E-Commerce Application. 
 
 ---
 
-## 📋 Deliverables Overview
+## 📋 Required Deliverables Summary
 
-| Attribute | Specification |
+| Deliverable | Details |
 | :--- | :--- |
-| **Assignment** | Technical Interview Assignment 2 – Mini AI E-Commerce Application |
-| **Total Development Time** | **24 Hours** |
-| **Primary AI Coding Assistant** | **OpenAI Codex** |
-| **Frontend Framework** | React 18 + TypeScript + Vite |
-| **Styling & Components** | Tailwind CSS + Shadcn UI Aesthetic + Lucide Icons |
+| **Total Time Taken** | **24 Hours** |
+| **AI Tools Used** | **OpenAI Codex** |
+| **One-Page System Design** | Full Architectural Diagram included below |
+| **Database Schema** | Relational PostgreSQL ER Diagram included below |
+| **Basic API Documentation** | REST API Endpoints Specification included below |
 
 ---
 
-## 🤖 AI Tools & Development Usage
+## ⏱️ Total Time Taken
+* **24 Hours** total development time.
 
-### **AI Assistant Used:** **OpenAI Codex**
+## 🤖 AI Tools Used
+* **OpenAI Codex**: Primary AI assistant used for Shadcn UI component architecture, responsive layout design, Google OAuth integration, Cart state management, and API client integration with FastAPI.
 
-### **How OpenAI Codex Was Utilized:**
-* **Shadcn UI Component Architecture:** Designed reusable UI components (`button.tsx`, `card.tsx`, `badge.tsx`, `input.tsx`, `dialog.tsx`, `select.tsx`, `table.tsx`, `skeleton.tsx`) adhering to the minimalist Shadcn UI design system.
-* **Page Layouts & Flows:** Built customer product listing, details view, shopping cart drawer, checkout review page, order tracking history, admin management dashboard, and AI support chat dialog.
-* **OAuth & State Integration:** Integrated `@react-oauth/google` authentication flow, Cart Context state management, and async API integration with FastAPI backend.
+---
+
+## 📐 One-Page System Design
+
+```mermaid
+flowchart TD
+    subgraph Client ["Client Layer (Frontend - React + TypeScript)"]
+        ReactUI["React + TypeScript + Tailwind CSS + Shadcn UI"]
+        GoogleAuthClient["Google OAuth SDK (@react-oauth/google)"]
+    end
+
+    subgraph API ["API Layer (FastAPI Backend)"]
+        FastAPI["FastAPI App Server (Uvicorn)"]
+        AuthModule["Google OAuth & JWT Verification Service"]
+        OrderModule["Order & Stock Engine"]
+        PaymentModule["Stripe Payment Gateway Integration"]
+        AIAgent["LangChain AI Support Agent"]
+    end
+
+    subgraph Data ["Data & Storage Layer"]
+        Postgres[(PostgreSQL Database)]
+        Alembic["Alembic Migrations"]
+    end
+
+    subgraph External ["External Services"]
+        GoogleOAuth["Google Auth APIs"]
+        StripeAPI["Stripe API & Webhooks"]
+        LLMProvider["OpenAI / Gemini LLM"]
+    end
+
+    ReactUI -->|HTTPS / REST API| FastAPI
+    GoogleAuthClient -->|Obtains ID Token| GoogleOAuth
+    ReactUI -->|Sends ID Token| AuthModule
+    AuthModule -->|Verifies Token| GoogleOAuth
+
+    FastAPI -->|ORM Queries| Postgres
+    OrderModule -->|Stock Verification & Transactions| Postgres
+    
+    PaymentModule -->|Checkout Sessions & Webhooks| StripeAPI
+    ReactUI -->|Redirects & Payment Verification| PaymentModule
+
+    ReactUI -->|POST /ai/chat| AIAgent
+    AIAgent -->|Tool Calls (Read-only Database SQL)| Postgres
+    AIAgent -->|Prompt & Context| LLMProvider
+```
+
+---
+
+## 🗄️ Database Schema
+
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : places
+    PRODUCTS ||--o{ ORDER_ITEMS : contains
+    ORDERS ||--|{ ORDER_ITEMS : includes
+
+    USERS {
+        uuid id PK
+        string email UK
+        string name
+        string google_sub UK
+        enum role "CUSTOMER | ADMIN"
+        timestamp created_at
+    }
+
+    PRODUCTS {
+        uuid id PK
+        string name
+        text description
+        numeric price "Check >= 0"
+        integer stock "Check >= 0"
+        string image_url
+        boolean is_active
+        timestamp created_at
+    }
+
+    ORDERS {
+        uuid id PK
+        uuid user_id FK
+        enum status "PENDING | PAID | FAILED | CANCELLED"
+        numeric total_amount
+        string payment_reference_id
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ORDER_ITEMS {
+        uuid id PK
+        uuid order_id FK
+        uuid product_id FK
+        integer quantity
+        numeric unit_price
+    }
+```
+
+---
+
+## 🔌 Basic API Documentation
+
+| Endpoint | Method | Access | Description |
+| :--- | :--- | :--- | :--- |
+| `/auth/google` | `POST` | Public | Authenticates via Google ID Token, registers user, issues JWT. |
+| `/products` | `GET` | Public | Lists available products. |
+| `/products/{id}` | `GET` | Public | Retrieves specific product details. |
+| `/orders` | `POST` | Authenticated | Creates a new order. |
+| `/orders/me` | `GET` | Customer | Retrieves order history for current customer. |
+| `/orders/{id}` | `GET` | Customer | Fetches single order details. |
+| `/payments/create-checkout-session` | `POST` | Authenticated | Creates Stripe checkout session. |
+| `/payments/verify` | `POST` | Authenticated | Verifies payment completion. |
+| `/webhooks/stripe` | `POST` | Public (Verified) | Webhook to update order status upon Stripe payment. |
+| `/admin/products` | `POST`/`PUT`/`DELETE` | Admin | Product CRUD management. |
+| `/admin/orders` | `GET` | Admin | Fetch all orders across customers. |
+| `/admin/orders/{id}/status` | `PATCH` | Admin | Update order fulfillment status. |
+| `/ai/chat` | `POST` | Authenticated | Query AI support agent. |
 
 ---
 
