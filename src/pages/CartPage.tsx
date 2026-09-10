@@ -12,22 +12,22 @@ export function CartPage() {
 
   if (items.length === 0) {
     return (
-      <Card className="mx-auto max-w-xl p-12 text-center shadow-subtle">
-        <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100/80">
-          <ShoppingCart className="size-8" />
+      <Card className="mx-auto max-w-md p-10 text-center shadow-xs">
+        <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-lg bg-slate-100 text-slate-900 border border-slate-200">
+          <ShoppingCart className="size-6" />
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Your cart is empty</h1>
-        <p className="mt-2 text-slate-500">Add something from the product catalog to get started.</p>
-        <Button asChild className="mt-6"><Link to="/">Browse products</Link></Button>
+        <h1 className="text-xl font-bold tracking-tight text-slate-900">Your cart is empty</h1>
+        <p className="mt-1 text-xs text-slate-500">Add something from the product catalog to get started.</p>
+        <Button asChild size="sm" className="mt-5"><Link to="/">Browse products</Link></Button>
       </Card>
     )
   }
 
   return (
-    <section className="mx-auto max-w-5xl">
-      <h1 className="mb-8 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Shopping cart</h1>
-      <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
-        <Card className="px-6 shadow-subtle divide-y border-slate-200/80">
+    <section className="mx-auto max-w-5xl space-y-6">
+      <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Shopping cart</h1>
+      <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+        <Card className="px-6 shadow-xs divide-y border-slate-200">
           {items.map((item) => (
             <CartItemRow
               key={item.productId}
@@ -37,14 +37,14 @@ export function CartPage() {
             />
           ))}
         </Card>
-        <Card className="h-fit shadow-subtle border-slate-200/80 bg-white/95">
-          <CardHeader><CardTitle className="text-xl">Order summary</CardTitle></CardHeader>
+        <Card className="h-fit shadow-xs border-slate-200 bg-card">
+          <CardHeader><CardTitle className="text-lg font-semibold">Order summary</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex justify-between border-b border-slate-100 pb-4 text-sm font-medium text-slate-600">
+            <div className="flex justify-between border-b border-slate-100 pb-3 text-sm text-slate-600">
               <span>Items</span>
               <span className="font-semibold text-slate-900">{items.reduce((sum, item) => sum + item.quantity, 0)}</span>
             </div>
-            <div className="flex justify-between py-2 text-xl font-extrabold text-slate-900">
+            <div className="flex justify-between py-1 text-lg font-bold text-slate-900">
               <span>Total</span>
               <span>{formatCurrency(total)}</span>
             </div>
@@ -57,3 +57,4 @@ export function CartPage() {
     </section>
   )
 }
+

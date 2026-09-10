@@ -62,16 +62,18 @@ export function AdminPage() {
 
   return (
     <section className="space-y-6">
-      <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Admin dashboard</h1>
-      <div className="flex w-fit gap-1.5 rounded-xl border border-slate-200/80 bg-white/90 p-1.5 shadow-2xs">
-        <Button variant={tab === "products" ? "default" : "outline"} size="sm" className="rounded-lg px-4 font-semibold" onClick={() => setTab("products")}>Products</Button>
-        <Button variant={tab === "orders" ? "default" : "outline"} size="sm" className="rounded-lg px-4 font-semibold" onClick={() => setTab("orders")}>Orders</Button>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Admin dashboard</h1>
+        <div className="flex w-fit gap-1 rounded-lg border border-slate-200 bg-slate-100/80 p-1 shadow-2xs">
+          <Button variant={tab === "products" ? "default" : "ghost"} size="sm" className="rounded-md px-3.5 text-xs font-medium" onClick={() => setTab("products")}>Products</Button>
+          <Button variant={tab === "orders" ? "default" : "ghost"} size="sm" className="rounded-md px-3.5 text-xs font-medium" onClick={() => setTab("orders")}>Orders</Button>
+        </div>
       </div>
-      {error && <Card className="border-rose-200/90 bg-rose-50/90 p-4 text-sm font-medium text-rose-700 shadow-2xs">{error}</Card>}
+      {error && <Card className="border-rose-200 bg-rose-50 p-4 text-xs font-medium text-rose-700 shadow-2xs">{error}</Card>}
       {loading ? (
         <div className="space-y-3">
-          <Skeleton className="h-12 rounded-xl bg-slate-200/60" />
-          <Skeleton className="h-64 rounded-2xl bg-slate-200/60" />
+          <Skeleton className="h-10 rounded-lg bg-slate-200/80" />
+          <Skeleton className="h-64 rounded-xl bg-slate-200/80" />
         </div>
       ) : tab === "products" ? (
         <AdminProductTable products={products} onSave={saveProduct} onDelete={deleteProduct} />
@@ -81,3 +83,4 @@ export function AdminPage() {
     </section>
   )
 }
+

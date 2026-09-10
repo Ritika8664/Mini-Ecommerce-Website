@@ -24,39 +24,39 @@ export function OrdersPage() {
   }, [])
 
   return (
-    <section className="mx-auto max-w-4xl">
-      <h1 className="mb-8 text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Your orders</h1>
+    <section className="mx-auto max-w-3xl space-y-6">
+      <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Your orders</h1>
       {loading && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton key={index} className="h-28 rounded-2xl bg-slate-200/60" />
+            <Skeleton key={index} className="h-24 rounded-xl bg-slate-200/80" />
           ))}
         </div>
       )}
-      {error && <Card className="border-red-200/80 bg-red-50/80 p-6 text-center text-red-700 shadow-subtle">{error}</Card>}
+      {error && <Card className="border-rose-200 bg-rose-50 p-6 text-center text-sm font-medium text-rose-700 shadow-2xs">{error}</Card>}
       {!loading && !error && orders.length === 0 && (
-        <Card className="p-12 text-center shadow-subtle">
-          <div className="mx-auto mb-3 flex size-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100/80">
-            <Package className="size-7" />
+        <Card className="p-12 text-center shadow-xs">
+          <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-lg bg-slate-100 text-slate-900 border border-slate-200">
+            <Package className="size-6" />
           </div>
-          <p className="text-lg font-bold text-slate-900">No orders yet</p>
-          <p className="mt-1 text-sm text-slate-500">When you place orders, they will show up here.</p>
+          <p className="text-base font-semibold text-slate-900">No orders yet</p>
+          <p className="mt-1 text-xs text-slate-500">When you place orders, they will show up here.</p>
         </Card>
       )}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {orders.map((order) => (
-          <Link key={order.id} to={`/orders/${order.id}`} state={{ order }} className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
-            <Card className="flex items-center justify-between gap-4 p-6 shadow-subtle border-slate-200/80 bg-white/95 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-indigo-200/90 group-hover:shadow-card">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-3">
-                  <p className="font-bold text-slate-900">Order #{order.id.slice(0, 8)}</p>
+          <Link key={order.id} to={`/orders/${order.id}`} state={{ order }} className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2">
+            <Card className="flex items-center justify-between gap-4 p-5 shadow-xs border-slate-200 bg-card transition-all duration-200 group-hover:border-slate-300 group-hover:shadow-md">
+              <div className="min-w-0 space-y-1">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <p className="font-semibold text-slate-900">Order #{order.id.slice(0, 8)}</p>
                   <OrderStatusBadge status={order.status} />
                 </div>
-                <p className="mt-2 text-sm text-slate-500">{formatDate(order.created_at)} · {order.items.reduce((sum, item) => sum + item.quantity, 0)} items</p>
+                <p className="text-xs text-slate-500">{formatDate(order.created_at)} · {order.items.reduce((sum, item) => sum + item.quantity, 0)} items</p>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-lg font-extrabold text-slate-900">{formatCurrency(order.total_amount)}</span>
-                <ChevronRight className="size-5 text-slate-400 transition-colors duration-200 group-hover:text-indigo-600" />
+                <span className="text-base font-bold text-slate-900">{formatCurrency(order.total_amount)}</span>
+                <ChevronRight className="size-4 text-slate-400 transition-colors duration-200 group-hover:text-slate-900" />
               </div>
             </Card>
           </Link>
@@ -65,3 +65,4 @@ export function OrdersPage() {
     </section>
   )
 }
+
