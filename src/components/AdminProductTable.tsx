@@ -40,20 +40,20 @@ function ProductDialog({ product, onSave }: { product?: Product; onSave: AdminPr
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {product ? <Button variant="outline" className="size-9 px-0" aria-label={`Edit ${product.name}`}><Pencil className="size-4" /></Button> : <Button><Plus className="mr-2 size-4" />Add product</Button>}
+        {product ? <Button variant="outline" className="size-9 rounded-lg px-0" aria-label={`Edit ${product.name}`}><Pencil className="size-4" /></Button> : <Button><Plus className="mr-2 size-4" />Add product</Button>}
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader><DialogTitle>{product ? "Edit product" : "Add product"}</DialogTitle></DialogHeader>
-        <form className="space-y-4" onSubmit={submit}>
-          <label className="block text-sm font-medium">Name<Input className="mt-1" required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label>
-          <label className="block text-sm font-medium">Description<textarea className="mt-1 min-h-24 w-full rounded-md border bg-background p-3 text-sm" required value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} /></label>
+      <DialogContent className="rounded-2xl p-6">
+        <DialogHeader><DialogTitle className="text-xl font-extrabold text-slate-900">{product ? "Edit product" : "Add product"}</DialogTitle></DialogHeader>
+        <form className="space-y-4 pt-2" onSubmit={submit}>
+          <label className="block text-sm font-semibold text-slate-700">Name<Input className="mt-1" required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label>
+          <label className="block text-sm font-semibold text-slate-700">Description<textarea className="mt-1 min-h-24 w-full rounded-lg border border-slate-200/90 bg-white/90 p-3 text-sm text-slate-900 outline-none shadow-2xs placeholder:text-slate-400 focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-indigo-500/25 transition-all duration-150" required value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} /></label>
           <div className="grid grid-cols-2 gap-4">
-            <label className="block text-sm font-medium">Price<Input className="mt-1" type="number" min="0" step="0.01" required value={form.price} onChange={(event) => setForm({ ...form, price: event.target.valueAsNumber })} /></label>
-            <label className="block text-sm font-medium">Stock<Input className="mt-1" type="number" min="0" required value={form.stock} onChange={(event) => setForm({ ...form, stock: event.target.valueAsNumber })} /></label>
+            <label className="block text-sm font-semibold text-slate-700">Price<Input className="mt-1" type="number" min="0" step="0.01" required value={form.price} onChange={(event) => setForm({ ...form, price: event.target.valueAsNumber })} /></label>
+            <label className="block text-sm font-semibold text-slate-700">Stock<Input className="mt-1" type="number" min="0" required value={form.stock} onChange={(event) => setForm({ ...form, stock: event.target.valueAsNumber })} /></label>
           </div>
-          <label className="block text-sm font-medium">Image URL<Input className="mt-1" type="url" required value={form.image_url} onChange={(event) => setForm({ ...form, image_url: event.target.value })} /></label>
-          <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={form.is_active} onChange={(event) => setForm({ ...form, is_active: event.target.checked })} />Active</label>
-          <Button className="w-full" disabled={saving}>{saving ? "Saving…" : "Save product"}</Button>
+          <label className="block text-sm font-semibold text-slate-700">Image URL<Input className="mt-1" type="url" required value={form.image_url} onChange={(event) => setForm({ ...form, image_url: event.target.value })} /></label>
+          <label className="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="checkbox" className="size-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" checked={form.is_active} onChange={(event) => setForm({ ...form, is_active: event.target.checked })} />Active</label>
+          <Button className="w-full mt-2" disabled={saving}>{saving ? "Saving…" : "Save product"}</Button>
         </form>
       </DialogContent>
     </Dialog>
@@ -63,21 +63,30 @@ function ProductDialog({ product, onSave }: { product?: Product; onSave: AdminPr
 export function AdminProductTable({ products, onSave, onDelete }: AdminProductTableProps) {
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between"><h2 className="text-xl font-semibold">Products</h2><ProductDialog onSave={onSave} /></div>
-      <div className="rounded-lg border bg-background">
+      <div className="flex items-center justify-between"><h2 className="text-xl font-bold text-slate-900">Products</h2><ProductDialog onSave={onSave} /></div>
+      <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 shadow-subtle">
         <Table>
           <TableHeader><TableRow><TableHead>Product</TableHead><TableHead>Price</TableHead><TableHead>Stock</TableHead><TableHead>Status</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {products.map((product) => (
               <TableRow key={product.id}>
-                <TableCell className="font-medium">{product.name}</TableCell><TableCell>{formatCurrency(product.price)}</TableCell><TableCell>{product.stock}</TableCell>
+                <TableCell className="font-semibold text-slate-900">{product.name}</TableCell>
+                <TableCell className="font-medium">{formatCurrency(product.price)}</TableCell>
+                <TableCell className="font-medium">{product.stock}</TableCell>
                 <TableCell><Badge variant={product.is_active ? "secondary" : "outline"}>{product.is_active ? "Active" : "Inactive"}</Badge></TableCell>
-                <TableCell><div className="flex justify-end gap-2"><ProductDialog product={product} onSave={onSave} /><Button variant="outline" className="size-9 px-0 text-red-600" onClick={() => void onDelete(product.id)} aria-label={`Delete ${product.name}`}><Trash2 className="size-4" /></Button></div></TableCell>
+                <TableCell>
+                  <div className="flex justify-end gap-2">
+                    <ProductDialog product={product} onSave={onSave} />
+                    <Button variant="outline" className="size-9 rounded-lg border-slate-200/80 px-0 text-rose-600 shadow-2xs hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700" onClick={() => void onDelete(product.id)} aria-label={`Delete ${product.name}`}>
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        {products.length === 0 && <p className="p-8 text-center text-sm text-slate-500">No products found.</p>}
+        {products.length === 0 && <p className="p-10 text-center text-sm font-medium text-slate-500">No products found.</p>}
       </div>
     </div>
   )
