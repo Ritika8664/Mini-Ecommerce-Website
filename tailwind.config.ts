@@ -21,8 +21,27 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      boxShadow: {
+        subtle: "var(--shadow-subtle)",
+        card: "var(--shadow-card)",
+        "card-hover": "var(--shadow-card-hover)",
+        "glow-purple": "var(--shadow-glow-purple)",
       },
       borderRadius: {
+        xl: "calc(var(--radius) + 2px)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
@@ -31,3 +50,4 @@ export default {
   },
   plugins: [animate],
 } satisfies Config
+

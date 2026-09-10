@@ -50,17 +50,22 @@ export function SupportChat() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="fixed bottom-5 right-5 z-40 size-12 rounded-full p-0 shadow-lg" aria-label="Open customer support">
-          <MessageCircle className="size-5" />
+        <Button className="fixed bottom-6 right-6 z-40 size-13 rounded-full p-0 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/35 hover:scale-105 active:scale-95 transition-all duration-200" aria-label="Open customer support">
+          <MessageCircle className="size-6" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex h-[min(620px,calc(100vh-2rem))] max-w-md flex-col p-0">
-        <DialogHeader className="border-b p-5">
-          <DialogTitle className="flex items-center gap-2"><Bot className="size-5" />Product and order support</DialogTitle>
+      <DialogContent className="flex h-[min(620px,calc(100vh-2rem))] max-w-md flex-col overflow-hidden p-0 rounded-2xl border-slate-200/80 shadow-card-hover">
+        <DialogHeader className="border-b border-slate-100 bg-gradient-to-r from-indigo-50/90 via-white to-purple-50/90 p-5">
+          <DialogTitle className="flex items-center gap-2.5 text-base font-bold text-slate-900">
+            <div className="flex size-8 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-2xs">
+              <Bot className="size-4" />
+            </div>
+            Product and order support
+          </DialogTitle>
         </DialogHeader>
-        <div className="flex-1 space-y-3 overflow-y-auto p-5" aria-live="polite">
+        <div className="flex-1 space-y-3.5 overflow-y-auto p-5" aria-live="polite">
           {messages.length === 0 && (
-            <p className="rounded-lg bg-slate-100 p-4 text-sm text-slate-600">
+            <p className="rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4 text-sm font-medium text-slate-600 shadow-2xs">
               Ask about available products, prices, stock, or one of your orders.
             </p>
           )}
@@ -68,22 +73,22 @@ export function SupportChat() {
             <div
               key={message.id}
               className={cn(
-                "max-w-[85%] rounded-xl px-4 py-2 text-sm leading-6",
+                "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-2xs",
                 message.role === "user"
-                  ? "ml-auto bg-primary text-primary-foreground"
-                  : "bg-slate-100 text-foreground",
+                  ? "ml-auto rounded-tr-xs bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium"
+                  : "rounded-tl-xs border border-slate-200/70 bg-slate-100/90 text-slate-900 font-medium",
               )}
             >
               {message.text}
             </div>
           ))}
           {loading && (
-            <div className="flex w-fit items-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-500">
-              <LoaderCircle className="size-4 animate-spin" />Checking store data...
+            <div className="flex w-fit items-center gap-2 rounded-2xl border border-slate-200/70 bg-slate-100/90 px-4 py-2.5 text-sm font-medium text-slate-500 shadow-2xs">
+              <LoaderCircle className="size-4 animate-spin text-indigo-600" />Checking store data...
             </div>
           )}
         </div>
-        <form className="flex gap-2 border-t p-4" onSubmit={sendMessage}>
+        <form className="flex gap-2 border-t border-slate-100 bg-white p-4" onSubmit={sendMessage}>
           <Input
             value={input}
             onChange={(event) => setInput(event.target.value)}
@@ -91,8 +96,9 @@ export function SupportChat() {
             maxLength={1000}
             disabled={loading}
             aria-label="Support message"
+            className="rounded-xl shadow-2xs"
           />
-          <Button className="shrink-0 px-3" disabled={loading || !input.trim()} aria-label="Send message">
+          <Button className="shrink-0 rounded-xl px-4" disabled={loading || !input.trim()} aria-label="Send message">
             <Send className="size-4" />
           </Button>
         </form>

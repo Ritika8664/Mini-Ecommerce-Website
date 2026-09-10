@@ -64,31 +64,43 @@ export function CheckoutPage() {
   }
 
   if (items.length === 0) {
-    return <Card className="mx-auto max-w-xl p-10 text-center"><h1 className="text-2xl font-bold">Nothing to check out</h1><Button asChild className="mt-6"><Link to="/">Browse products</Link></Button></Card>
+    return (
+      <Card className="mx-auto max-w-xl p-12 text-center shadow-subtle">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Nothing to check out</h1>
+        <p className="mt-2 text-slate-500">Your shopping cart is currently empty.</p>
+        <Button asChild className="mt-6"><Link to="/">Browse products</Link></Button>
+      </Card>
+    )
   }
 
   return (
     <section className="mx-auto max-w-3xl">
-      <h1 className="mb-8 text-3xl font-bold tracking-tight">Checkout</h1>
-      <Card>
-        <CardHeader><CardTitle>Review your order</CardTitle></CardHeader>
-        <CardContent className="space-y-5">
-          <div className="divide-y">
+      <h1 className="mb-8 text-3xl font-extrabold tracking-tight text-slate-900">Checkout</h1>
+      <Card className="shadow-subtle border-slate-200/80 bg-white/95">
+        <CardHeader><CardTitle className="text-xl">Review your order</CardTitle></CardHeader>
+        <CardContent className="space-y-6">
+          <div className="divide-y divide-slate-100 border-y border-slate-100">
             {items.map((item) => (
               <div key={item.productId} className="flex justify-between gap-4 py-4">
-                <div><p className="font-medium">{item.name}</p><p className="text-sm text-slate-500">Quantity: {item.quantity}</p></div>
-                <p className="font-semibold">{formatCurrency(item.price * item.quantity)}</p>
+                <div>
+                  <p className="font-semibold text-slate-900">{item.name}</p>
+                  <p className="text-sm text-slate-500">Quantity: {item.quantity}</p>
+                </div>
+                <p className="font-bold text-slate-900">{formatCurrency(item.price * item.quantity)}</p>
               </div>
             ))}
           </div>
-          <div className="flex justify-between border-t pt-5 text-xl font-bold"><span>Total</span><span>{formatCurrency(total)}</span></div>
-          {error && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>}
-          <Button size="lg" className="w-full" disabled={submitting} onClick={handlePayNow}>
-            <CreditCard className="mr-2 size-4" /> {submitting ? "Opening secure checkout..." : "Pay now"}
+          <div className="flex justify-between pt-2 text-xl font-extrabold text-slate-900">
+            <span>Total</span>
+            <span>{formatCurrency(total)}</span>
+          </div>
+          {error && <p className="rounded-xl border border-red-200/90 bg-red-50/90 p-4 text-sm font-medium text-red-700">{error}</p>}
+          <Button size="lg" className="w-full" disabled={submitting} onClick={() => void handlePayNow()}>
+            <CreditCard className="mr-2 size-5" /> {submitting ? "Opening secure checkout..." : "Pay now"}
           </Button>
           {pendingOrderId && (
-            <p className="text-center text-xs text-slate-500">
-              Pending order {pendingOrderId} was created. Retrying will use this order.
+            <p className="rounded-lg bg-indigo-50/80 border border-indigo-100 p-3 text-center text-xs font-medium text-indigo-900">
+              Pending order #{pendingOrderId.slice(0, 8)} was created. Retrying will use this order.
             </p>
           )}
         </CardContent>

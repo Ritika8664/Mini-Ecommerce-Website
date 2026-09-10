@@ -61,14 +61,19 @@ export function AdminPage() {
   }
 
   return (
-    <section>
-      <h1 className="text-3xl font-bold tracking-tight">Admin dashboard</h1>
-      <div className="my-8 flex w-fit gap-2 rounded-lg border bg-background p-1">
-        <Button variant={tab === "products" ? "default" : "outline"} onClick={() => setTab("products")}>Products</Button>
-        <Button variant={tab === "orders" ? "default" : "outline"} onClick={() => setTab("orders")}>Orders</Button>
+    <section className="space-y-6">
+      <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Admin dashboard</h1>
+      <div className="flex w-fit gap-1.5 rounded-xl border border-slate-200/80 bg-white/90 p-1.5 shadow-2xs">
+        <Button variant={tab === "products" ? "default" : "outline"} size="sm" className="rounded-lg px-4 font-semibold" onClick={() => setTab("products")}>Products</Button>
+        <Button variant={tab === "orders" ? "default" : "outline"} size="sm" className="rounded-lg px-4 font-semibold" onClick={() => setTab("orders")}>Orders</Button>
       </div>
-      {error && <Card className="mb-5 p-4 text-sm text-red-600">{error}</Card>}
-      {loading ? <div className="space-y-3"><Skeleton className="h-12" /><Skeleton className="h-64" /></div> : tab === "products" ? (
+      {error && <Card className="border-rose-200/90 bg-rose-50/90 p-4 text-sm font-medium text-rose-700 shadow-2xs">{error}</Card>}
+      {loading ? (
+        <div className="space-y-3">
+          <Skeleton className="h-12 rounded-xl bg-slate-200/60" />
+          <Skeleton className="h-64 rounded-2xl bg-slate-200/60" />
+        </div>
+      ) : tab === "products" ? (
         <AdminProductTable products={products} onSave={saveProduct} onDelete={deleteProduct} />
       ) : (
         <AdminOrderTable orders={orders} onStatusChange={updateStatus} />

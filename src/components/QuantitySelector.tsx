@@ -10,13 +10,25 @@ interface QuantitySelectorProps {
 
 export function QuantitySelector({ value, max, onChange }: QuantitySelectorProps) {
   return (
-    <div className="inline-flex items-center rounded-md border" aria-label="Quantity selector">
-      <Button variant="outline" className="size-9 rounded-r-none border-0" disabled={value <= 1} onClick={() => onChange(value - 1)} aria-label="Decrease quantity">
-        <Minus className="size-4" />
+    <div className="inline-flex items-center rounded-xl border border-slate-200/90 bg-white/90 p-0.5 shadow-2xs" aria-label="Quantity selector">
+      <Button
+        variant="outline"
+        className="size-8 rounded-lg border-0 bg-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-1"
+        disabled={value <= 1}
+        onClick={() => onChange(value - 1)}
+        aria-label="Decrease quantity"
+      >
+        <Minus className="size-3.5" />
       </Button>
-      <span className="w-10 text-center text-sm font-medium" aria-live="polite">{value}</span>
-      <Button variant="outline" className="size-9 rounded-l-none border-0" disabled={value >= max} onClick={() => onChange(value + 1)} aria-label="Increase quantity">
-        <Plus className="size-4" />
+      <span className="w-10 text-center text-sm font-semibold text-slate-900 select-none" aria-live="polite">{value}</span>
+      <Button
+        variant="outline"
+        className="size-8 rounded-lg border-0 bg-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-1"
+        disabled={value >= max}
+        onClick={() => onChange(value + 1)}
+        aria-label="Increase quantity"
+      >
+        <Plus className="size-3.5" />
       </Button>
     </div>
   )
